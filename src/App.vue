@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopMenu>
+    <TopMenu :session="session">
       <router-view />
     </TopMenu>
   </div>
@@ -9,23 +9,23 @@
 <script setup lang="ts">
 import router from './router';
 import TopMenu from './layout/TopMenu.vue';
-// import supabase from '@/libs/supabase';
+
 import { onMounted, ref, toRefs } from 'vue';
 
 import useSupabase from '@/libs/supabase';
 
-const session = ref();
-// const { client } = useSupabase();
+const session = ref<any>();
+const { client } = useSupabase();
 
-// onMounted(() => {
-//   client.auth.getSession().then(({ data }) => {
-//     session.value = data.session;
-//   });
+onMounted(() => {
+  client.auth.getSession().then(({ data }) => {
+    session.value = data.session;
+  });
 
-//   client.auth.onAuthStateChange((_, _session) => {
-//     session.value = _session;
-//   });
-// });
+  client.auth.onAuthStateChange((_, _session) => {
+    session.value = _session;
+  });
+});
 </script>
 
 <style scoped lang="scss"></style>

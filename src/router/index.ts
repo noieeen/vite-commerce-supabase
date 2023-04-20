@@ -12,7 +12,11 @@ import Cart from '@/views/cart/Cart.vue';
 import Checkout from '@/views/checkout/Checkout.vue';
 
 // admin
-import ProductManagement from '@/views/admin/product/ProductManagement.vue';
+import AdminProducts from '@/views/admin/product-management/Products.vue';
+import AdminProductDetail from '@/views/admin/product-management/ProductDetail.vue';
+import AdminDashboard from '@/views/admin/dashboard/Dashboard.vue';
+import AdminUsers from '@/views/admin/user-management/Users.vue';
+import AdminUserDetail from '@/views/admin/user-management/UserDetail.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +34,18 @@ const routes: Array<RouteRecordRaw> = [
     path: '/auth',
     name: 'auth',
     component: Auth,
+  },
+
+  {
+    path: '/cart',
+    name: 'cart',
+    component: Cart,
+  },
+
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: Checkout,
   },
 
   {
@@ -59,6 +75,39 @@ const routes: Array<RouteRecordRaw> = [
     path: '/unauthorized',
     name: 'unauthorized',
     component: Unauthorized,
+  },
+  // Admin
+  {
+    path: '/admin',
+    name: 'admin',
+    component: NotFound,
+  },
+  {
+    path: '/admin/dashboard',
+    name: 'admin-dashboard',
+    component: AdminDashboard,
+  },
+
+  {
+    path: '/admin/products',
+    name: 'admin-products',
+    component: AdminProducts,
+  },
+  {
+    path: '/admin/product-detail',
+    name: 'admin-product-detail',
+    component: AdminProductDetail,
+  },
+
+  {
+    path: '/admin/users',
+    name: 'admin-users',
+    component: AdminUsers,
+  },
+  {
+    path: '/admin/users',
+    name: 'admin-user-detail',
+    component: AdminUserDetail,
   },
 ];
 
