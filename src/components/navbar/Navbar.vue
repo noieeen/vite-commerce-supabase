@@ -15,7 +15,7 @@
           <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
               <div class="w-10 rounded-full">
-                <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                <img src="@/assets/images/sample.webp" />
               </div>
             </label>
             <ul
@@ -36,8 +36,7 @@
       </div>
     </div>
   </template>
-  
+
   <script setup lang="ts"></script>
-  
+
   <style scoped></style>
-  
