@@ -3,8 +3,8 @@
     <div class="artboard phone-3">
       <div class="text-3xl text-center">Profile</div>
       <form class="form-control" @submit.prevent="updateProfile">
-        <div>
-          <Avatar v-model:path="avatar_url" @upload="updateProfile" size="10" />
+        <div class="m-3">
+          <Avatar v-model:path="avatar_url" @upload="updateProfile" :size="10" />
         </div>
         <div class="mt-2">
           <label for="email">Email</label>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <img v-if="src" :src="src" alt="Avatar" class="avatar image" :style="{ height: size + 'em', width: size + 'em' }" />
+    <img v-if="src" :src="src" alt="Avatar" class="rounded-md" :style="{ height: size + 'em', width: size + 'em' }" />
     <div v-else class="avatar no-image" :style="{ height: size + 'em', width: size + 'em' }" />
 
     <div :style="{ width: size + 'em' }">
-      <label class="button primary block" for="single">
+      <label class="btn btn-success mt-2" for="single">
         {{ uploading ? 'Uploading ...' : 'Upload' }}
       </label>
       <input style="visibility: hidden; position: absolute" type="file" id="single" accept="image/*" @change="uploadAvatar" :disabled="uploading" />
@@ -16,12 +16,21 @@
 import { ref, toRefs, watch } from 'vue';
 import useSupabase from '@/libs/supabase';
 
-const prop = defineProps(['path', 'size']);
-const { path, size } = toRefs(prop);
+interface Props {
+  path: string;
+  size: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  path: '',
+  size: 0,
+});
+const { path, size } = toRefs(props);
+
 const { client } = useSupabase();
 
 const emit = defineEmits(['upload', 'update:path']);
-const uploading = ref(false);
+const uploading = ref<boolean>(false);
 const src = ref<string>('');
 const files = ref();
 
