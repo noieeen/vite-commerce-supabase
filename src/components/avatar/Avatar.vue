@@ -1,7 +1,10 @@
 <template>
   <div>
-    <img v-if="src" :src="src" alt="Avatar" class="rounded-md" :style="{ height: size + 'em', width: size + 'em' }" />
-    <div v-else class="avatar no-image" :style="{ height: size + 'em', width: size + 'em' }" />
+    <div class="indicator">
+      <span v-if="!src || uploading" class="indicator-item indicator-center indicator-middle badge badge-secondary">Loading...</span>
+      <img v-if="src" :src="src" alt="Avatar" class="rounded-md" :style="{ height: size + 'em', width: size + 'em' }" />
+      <div v-else class="avatar no-image" :style="{ height: size + 'em', width: size + 'em' }" />
+    </div>
 
     <div :style="{ width: size + 'em' }">
       <label class="btn btn-success mt-2" for="single">

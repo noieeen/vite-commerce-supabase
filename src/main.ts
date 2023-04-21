@@ -3,7 +3,20 @@ import { inject } from '@vercel/analytics';
 import './style.css';
 import App from './App.vue';
 
+import { pinia } from '@/store';
+import { i18n } from '@/libs/i18n';
 import router from './router';
 
-createApp(App).use(router).mount('#app');
+import { useSettingStore } from '@/store/settingStore';
+
+createApp(App)
+  // centralize state management: pinia
+  .use(pinia)
+  // localization
+  .use(i18n)
+  // router: vue-router
+  .use(router)
+  .mount('#app');
+
+// @vercel/analytics
 inject();

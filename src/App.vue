@@ -3,6 +3,8 @@
     <TopMenu :session="session">
       <router-view />
     </TopMenu>
+    <validate-modal />
+    <toast />
   </div>
 </template>
 
@@ -13,6 +15,10 @@ import TopMenu from './layout/TopMenu.vue';
 import { onMounted, ref, toRefs } from 'vue';
 
 import useSupabase from '@/libs/supabase';
+
+// components
+import ValidateModal from './components/modal/ValidateModal.vue';
+import Toast from './components/toast/Toast.vue';
 
 const session = ref<any>();
 const { client } = useSupabase();

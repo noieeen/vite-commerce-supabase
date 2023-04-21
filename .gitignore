@@ -13,6 +13,7 @@ dist-ssr
 *.local
 note
 supabase
+/src/views/playground
 
 # Editor directories and files
 .vscode/*
