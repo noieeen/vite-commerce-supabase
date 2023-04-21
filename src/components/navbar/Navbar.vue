@@ -95,7 +95,7 @@ function onClickRoute(name: string) {
 async function onClickSignOut() {
   await signOut();
   router.push('/');
-  location.reload();
+  // location.reload();
 }
 
 onMounted(() => {

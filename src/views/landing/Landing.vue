@@ -1,9 +1,6 @@
 <template>
   <div class="bg-white min-h-screen">
-
-
     <div class="relative isolate px-6 pt-14 lg:px-8">
-
       <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
         <div class="hidden sm:mb-8 sm:flex sm:justify-center">
           <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
@@ -25,7 +22,16 @@
               class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >Get started</a
             >
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+            <a
+              href="#"
+              @click="
+                () => {
+                  router.push('products');
+                }
+              "
+              class="text-sm font-semibold leading-6 text-gray-900"
+              >Shopping <span aria-hidden="true">→</span></a
+            >
           </div>
         </div>
       </div>
@@ -65,13 +71,14 @@
 import { ref } from 'vue';
 import { Dialog, DialogPanel } from '@headlessui/vue';
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+import router from '@/router';
 
-const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
-];
+// const navigation = [
+//   { name: 'Product', href: '#' },
+//   { name: 'Features', href: '#' },
+//   { name: 'Marketplace', href: '#' },
+//   { name: 'Company', href: '#' },
+// ];
 
-const mobileMenuOpen = ref(false);
+// const mobileMenuOpen = ref(false);
 </script>

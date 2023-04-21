@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import useSupabase from '@/libs/supabase';
+import { ref } from 'vue';
 // views
 
 import Landing from '@/views/landing/Landing.vue';
@@ -17,6 +19,10 @@ import AdminProductDetail from '@/views/admin/product-management/ProductDetail.v
 import AdminDashboard from '@/views/admin/dashboard/Dashboard.vue';
 import AdminUsers from '@/views/admin/user-management/Users.vue';
 import AdminUserDetail from '@/views/admin/user-management/UserDetail.vue';
+import { Session } from '@supabase/supabase-js';
+// import DashboardVue from '@/views/admin/dashboard/Dashboard.vue';
+
+const { client } = useSupabase();
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +40,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/auth',
     name: 'auth',
     component: Auth,
+    meta: { redirectIfLoggedIn: true },
   },
 
   {
@@ -64,6 +71,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      requiresAuth: true,
+    },
   },
 
   {
@@ -86,34 +96,83 @@ const routes: Array<RouteRecordRaw> = [
     path: '/admin/dashboard',
     name: 'admin-dashboard',
     component: AdminDashboard,
+    meta: {
+      requiresAdmin: true,
+    },
   },
 
   {
     path: '/admin/products',
     name: 'admin-products',
     component: AdminProducts,
+    meta: {
+      requiresAdmin: true,
+    },
   },
   {
     path: '/admin/product-detail',
     name: 'admin-product-detail',
     component: AdminProductDetail,
+    meta: {
+      requiresAdmin: true,
+    },
   },
 
   {
     path: '/admin/users',
     name: 'admin-users',
     component: AdminUsers,
+    meta: {
+      requiresAdmin: true,
+    },
   },
   {
     path: '/admin/users',
     name: 'admin-user-detail',
     component: AdminUserDetail,
+    meta: {
+      requiresAdmin: true,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some((x) => x.meta.requiresAuth);
+  const requiresAdmin = to.matched.some((x) => x.meta.requiresAdmin);
+  const redirectIfLoggedIn = to.matched.some((x) => x.meta.redirectIfLoggedIn);
+  const clientSession = ref<Session | null>(null);
+  await client.auth.getSession().then(({ data }) => {
+    clientSession.value = data.session;
+  });
+  // console.log('clientSession', clientSession.value);
+  if (redirectIfLoggedIn && clientSession.value) {
+    next('/');
+    // router.push('/');
+  } else if (requiresAuth && !clientSession.value) {
+    next('/auth');
+  } else if (requiresAdmin && !clientSession.value) {
+    next('/unauthorized');
+  } else if (requiresAdmin && clientSession.value) {
+    let { data, error, status } = await client.from('profiles').select('*').eq('id', clientSession.value.user.id).single();
+    console.log(data);
+
+    if (error && status !== 406) throw error;
+
+    if (data) {
+      if (!data.is_admin) {
+        next('/unauthorized');
+      }
+    }
+  }
+
+  console.log('router');
+
+  return next();
 });
 
 export default router;
