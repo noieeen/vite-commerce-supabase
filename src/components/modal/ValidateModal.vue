@@ -48,7 +48,7 @@
                   <button
                     v-if="!validationModalConfig.confirmBtnDisabled"
                     type="button"
-                    class="inline-flex w-full justify-center rounded-md bg-success px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    class="inline-flex w-full justify-center rounded-md bg-success px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 sm:ml-3 sm:w-auto"
                     @click="validationModalConfig.onConfirm"
                   >
                     {{ validationModalConfig.confirmLabel || 'Confirm' }}
@@ -85,7 +85,7 @@
                   <button
                     v-if="!validationModalConfig.confirmBtnDisabled"
                     type="button"
-                    class="inline-flex w-full justify-center rounded-md bg-warning px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    class="inline-flex w-full justify-center rounded-md bg-warning px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 sm:ml-3 sm:w-auto"
                     @click="validationModalConfig.onConfirm"
                   >
                     {{ validationModalConfig.confirmLabel || 'Confirm' }}
@@ -159,7 +159,7 @@
                   <button
                     v-if="!validationModalConfig.confirmBtnDisabled"
                     type="button"
-                    class="inline-flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                    class="inline-flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 sm:ml-3 sm:w-auto"
                     @click="validationModalConfig.onConfirm"
                   >
                     {{ validationModalConfig.confirmLabel || 'Confirm' }}
