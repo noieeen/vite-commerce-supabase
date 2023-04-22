@@ -13,6 +13,8 @@ import Unauthorized from '@/views/error/Unauthorized.vue';
 import Cart from '@/views/cart/Cart.vue';
 import Checkout from '@/views/checkout/Checkout.vue';
 
+import Playground from '@/views/playground/Playground.vue';
+
 // admin
 import AdminProducts from '@/views/admin/product-management/Products.vue';
 import AdminProductDetail from '@/views/admin/product-management/ProductDetail.vue';
@@ -65,6 +67,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/product-detail',
     name: 'product-detail',
     component: ProductDetail,
+  },
+
+  {
+    path: '/playground',
+    name: 'playground',
+    component: Playground,
   },
 
   {

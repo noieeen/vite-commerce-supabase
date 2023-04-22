@@ -32,6 +32,16 @@
               class="text-sm font-semibold leading-6 text-gray-900"
               >Shopping <span aria-hidden="true">→</span></a
             >
+            <button
+              class="btn"
+              @click="
+                () => {
+                  router.push('/playground');
+                }
+              "
+            >
+              Playground
+            </button>
           </div>
         </div>
       </div>

@@ -12,8 +12,8 @@ export const useModalStore = defineStore('modal', {
         onCancel: () => {},
         onClose: () => {},
         type: '',
-        confirmBtn_Disabled: false,
-        cancelBtn_Disabled: false,
+        confirmBtnDisabled: false,
+        cancelBtnDisabled: false,
       },
     },
   getters: {
@@ -29,8 +29,8 @@ export const useModalStore = defineStore('modal', {
       this.validationModal.description = payload.description || '';
       this.validationModal.confirmLabel = payload.confirmLabel || '';
       this.validationModal.type = payload.type;
-      this.validationModal.confirmBtn_Disabled = payload.confirmBtn_Disabled || false;
-      this.validationModal.cancelBtn_Disabled = payload.cancelBtn_Disabled || false;
+      this.validationModal.confirmBtnDisabled = payload.confirmBtnDisabled || false;
+      this.validationModal.cancelBtnDisabled = payload.cancelBtnDisabled || false;
 
       this.validationModal.onConfirm = payload.onConfirm
         ? () => {
@@ -74,8 +74,8 @@ export const useModalStore = defineStore('modal', {
       this.validationModal.type = '';
       this.validationModal.onConfirm = () => {};
       this.validationModal.onCancel = () => {};
-      this.validationModal.confirmBtn_Disabled = false;
-      this.validationModal.cancelBtn_Disabled = false;
+      this.validationModal.confirmBtnDisabled = false;
+      this.validationModal.cancelBtnDisabled = false;
     },
   },
 });

@@ -9,8 +9,8 @@ declare namespace BaseModal {
       onCancel: VoidFunction;
       onClose: VoidFunction;
       type: string;
-      confirmBtn_Disabled: boolean;
-      cancelBtn_Disabled: boolean;
+      confirmBtnDisabled: boolean;
+      cancelBtnDisabled: boolean;
     };
     baseModal: {
       isOpen: boolean;
@@ -21,12 +21,20 @@ declare namespace BaseModal {
     title: string;
     description: string;
     confirmLabel: string;
+    type: string;
+    confirmBtnDisabled: boolean;
+    cancelBtnDisabled: boolean;
     onConfirm: Function;
     onCancel: Function;
     onClose: Function;
-    type: string;
-    confirmBtn_Disabled: boolean;
-    cancelBtn_Disabled: boolean;
+    autoClose?: boolean;
+  }
+
+  interface ModalType {
+    success: 'success';
+    warning: 'warning';
+    error: 'error';
+    default: 'default';
   }
 
   interface SaveSegmentModal {
