@@ -3,7 +3,7 @@ import { createPinia } from 'pinia';
 // create pinia instance, for use in application
 // pinia must be created before use its store in any part of the application
 // (see: https://pinia.vuejs.org/core-concepts/outside-component-usage.html#single-page-applications)
-export const pinia = createPinia();
+export const pinia = createPinia()
 
 // TODO: initialize pinia (e.g. its plugins)
 

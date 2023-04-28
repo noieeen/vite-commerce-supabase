@@ -58,15 +58,8 @@ export default function useValidationToast() {
       autoClose,
       duration,
     };
-    console.log('open success', payload);
 
     store.OPEN_VALIDATION_TOAST(payload);
-
-    // if (autoClose) {
-    //   setTimeout(() => {
-    //     store.CLOSE_VALIDATION_TOAST(toastId);
-    //   }, 2000);
-    // }
   };
 
   const openErrorToast = (title = '', description = '', confirmLabel = '', onConfirm = () => {}, onClose = () => {}) => {
@@ -105,15 +98,8 @@ export default function useValidationToast() {
       onCancel: () => {},
       onClose,
     };
-    console.log('open success');
 
     store.OPEN_VALIDATION_TOAST(payload);
-
-    // if (autoClose) {
-    //   setTimeout(() => {
-    //     store.CLOSE_VALIDATION_TOAST();
-    //   }, 2000);
-    // }
   };
 
   return {

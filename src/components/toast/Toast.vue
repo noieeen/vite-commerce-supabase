@@ -1,44 +1,45 @@
 <template>
-  <div class="toast toast-top toast-end z-10" v-if="toasts.length">
-    <!-- <TransitionRoot as="template" :show="toasts.length > 0"> -->
-    <!-- <TransitionChild
+  <TransitionRoot as="div" :show="toasts.length > 0"
+    ><div class="toast toast-top toast-end z-10" v-if="toasts.length">
+      <TransitionChild
+        v-for="toast in toasts"
         as="template"
-        enter="ease-out duration-300"
-        enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-        enter-to="opacity-100 translate-y-0 sm:scale-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100 translate-y-0 sm:scale-100"
-        leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-      > -->
-    <div class="alert bg-white shadow-lg" v-for="toast in toasts" @click="closeValidationToast(toast.validationToast.onClose, toast.id)">
-      <div>
-        <div>
-          <h3 class="font-semi-bold">{{ toast.validationToast.title }}</h3>
-          <div class="text-xs">{{ toast.validationToast.description }}</div>
+        enter="transition ease-in-out duration-300 transform"
+        enter-from="-translate-x-full"
+        enter-to="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leave-from="translate-x-0"
+        leave-to="-translate-x-full"
+      >
+        <div class="alert bg-white shadow-lg" @click="closeValidationToast(toast.validationToast.onClose, toast.id)">
+          <div>
+            <div>
+              <h3 class="font-semi-bold">{{ toast.validationToast.title }}</h3>
+              <div class="text-xs">{{ toast.validationToast.description }}</div>
+            </div>
+          </div>
+          <div class="flex-none">
+            <button class="btn btn-sm btn-ghost" @click="toast.validationToast.onCancel">Deny</button>
+            <button
+              class="btn btn-sm"
+              :class="[
+                toast.validationToast.type == 'success'
+                  ? 'btn-success'
+                  : toast.validationToast.type == 'warning'
+                  ? 'btn-warning'
+                  : toast.validationToast.type == 'error'
+                  ? 'btn-error'
+                  : 'btn-primary',
+              ]"
+              @click="toast.validationToast.onConfirm"
+            >
+              {{ toast.validationToast.confirmLabel || 'Accept' }}
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-sm btn-ghost" @click="toast.validationToast.onCancel">Deny</button>
-        <button
-          class="btn btn-sm"
-          :class="[
-            toast.validationToast.type == 'success'
-              ? 'btn-success'
-              : toast.validationToast.type == 'warning'
-              ? 'btn-warning'
-              : toast.validationToast.type == 'error'
-              ? 'btn-error'
-              : 'btn-primary',
-          ]"
-          @click="toast.validationToast.onConfirm"
-        >
-          {{ toast.validationToast.confirmLabel || 'Accept' }}
-        </button>
-      </div>
+      </TransitionChild>
     </div>
-    <!-- </TransitionChild> -->
-    <!-- </TransitionRoot> -->
-  </div>
+  </TransitionRoot>
 </template>
 
 <script setup lang="ts">

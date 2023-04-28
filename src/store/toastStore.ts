@@ -22,8 +22,6 @@ export const useToastStore = defineStore('toast', {
 
     OPEN_VALIDATION_TOAST(value: Toast.PayloadValue) {
       const payload = value;
-      console.log('OPEN_VALIDATION_TOAST', payload);
-
       // id = success1
       const id: string = payload.type + this.toastRunning;
       let toast: Toast.ToastState = {

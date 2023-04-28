@@ -24,7 +24,7 @@
     </div>
   </main>
 </template>
-<script lang="ts" setup>
+<script setup lang="ts" >
 import router from '@/router';
 
 function onClickRoute() {

@@ -8,6 +8,8 @@ import { i18n } from '@/libs/i18n';
 import router from './router';
 
 import { useSettingStore } from '@/store/settingStore';
+import { useToastStore } from './store/toastStore';
+// import {usestore}
 
 createApp(App)
   // centralize state management: pinia
@@ -20,3 +22,5 @@ createApp(App)
 
 // @vercel/analytics
 // inject();
+// useSettingStore();
+// useToastStore();

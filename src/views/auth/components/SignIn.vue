@@ -6,7 +6,7 @@
     </div>
 
     <div class="mt-5">
-      <input class="input bg-white w-full" required type="email" placeholder="Your email" v-model="email" />
+      <input class="input input-bordered w-full max-w-xs" required type="email" placeholder="Your email" v-model="email" />
     </div>
     <div class="mt-3 text-center">
       <button class="btn btn-primary" :disabled="loading" @click="onClickSignIn">

@@ -34,9 +34,12 @@
 import { onMounted, ref, toRefs, onBeforeMount } from 'vue';
 import useSupabase from '@/libs/supabase';
 import Avatar from '../../components/avatar/Avatar.vue';
+import { useAuthStore } from '@/store/authStore';
+import router from '@/router';
 
+const store = useAuthStore();
 const session = ref<any>();
-const { client, signOut } = useSupabase();
+const { client } = useSupabase();
 
 const email = ref<string>('');
 const loading = ref<boolean>(false);
@@ -91,19 +94,14 @@ async function updateProfile() {
 }
 
 async function onClickSignOut() {
-  await signOut();
+  await store.SIGN_OUT();
 }
 
 onBeforeMount(() => {});
 
 onMounted(async () => {
-  await client.auth.getSession().then(({ data }) => {
-    session.value = data.session;
-  });
-
-  await client.auth.onAuthStateChange((_, _session) => {
-    session.value = _session;
-  });
+  if (!store.user) router.push('/');
+  session.value = store.user;
 
   await getProfile();
 });

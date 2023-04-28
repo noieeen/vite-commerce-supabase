@@ -55,7 +55,7 @@ export default function useValidationModal() {
       onCancel: () => {},
       onClose,
     };
-    console.log('open success');
+
 
     store.OPEN_VALIDATION_MODAL(payload);
 
@@ -102,7 +102,7 @@ export default function useValidationModal() {
       onCancel: () => {},
       onClose,
     };
-    console.log('open success');
+
 
     store.OPEN_VALIDATION_MODAL(payload);
 

@@ -78,13 +78,10 @@ import router from '@/router';
 import useSupabase from '@/libs/supabase';
 import { toRefs, toRef, ref, onMounted } from 'vue';
 
-interface Props {
-  session: any;
-}
+import { useAuthStore } from '@/store/authStore';
+const store = useAuthStore();
 
-const props = defineProps<Props>();
-
-const user = ref(props.session);
+const user = ref();
 
 const { signOut, client } = useSupabase();
 
@@ -99,15 +96,16 @@ async function onClickSignOut() {
 }
 
 onMounted(() => {
-  if (!user.value) {
-    client.auth.getSession().then(({ data }) => {
-      user.value = data.session;
-    });
+  user.value = store.user;
+  // if (!user.value) {
+  //   client.auth.getSession().then(({ data }) => {
+  //     user.value = data.session;
+  //   });
 
-    client.auth.onAuthStateChange((_, _session) => {
-      user.value = _session;
-    });
-  }
+  //   client.auth.onAuthStateChange((_, _session) => {
+  //     user.value = _session;
+  //   });
+  // }
 });
 </script>
 
