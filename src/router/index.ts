@@ -64,7 +64,7 @@ const routes: Array<RouteRecordRaw> = [
   },
 
   {
-    path: '/product-detail',
+    path: '/product-detail/:productId',
     name: 'product-detail',
     component: ProductDetail,
   },

@@ -23,9 +23,7 @@ export const useAuthStore = defineStore('auth', {
     },
   getters: {
     isAuth: (state) => state.auth,
-    currUser: (state) => {
-      state.user;
-    },
+    currUser: (state) => state.user,
   },
   actions: {
     async SIGN_OUT() {

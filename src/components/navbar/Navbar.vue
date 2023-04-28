@@ -65,7 +65,7 @@
             <li><a @click="onClickSignOut()">Logout</a></li>
           </ul>
         </div>
-        <div v-if="user == null || user == undefined" class="flex-1">
+        <div v-if="!user" class="flex-1">
           <a class="btn btn-ghost normal-case text-xl" @click="onClickRoute('/auth')">Login</a>
         </div>
       </div>
@@ -76,14 +76,14 @@
 <script setup lang="ts">
 import router from '@/router';
 import useSupabase from '@/libs/supabase';
-import { toRefs, toRef, ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 
 import { useAuthStore } from '@/store/authStore';
 const store = useAuthStore();
 
 const user = ref();
 
-const { signOut, client } = useSupabase();
+const { signOut } = useSupabase();
 
 function onClickRoute(name: string) {
   router.push(name);
@@ -95,18 +95,13 @@ async function onClickSignOut() {
   // location.reload();
 }
 
-onMounted(() => {
-  user.value = store.user;
-  // if (!user.value) {
-  //   client.auth.getSession().then(({ data }) => {
-  //     user.value = data.session;
-  //   });
-
-  //   client.auth.onAuthStateChange((_, _session) => {
-  //     user.value = _session;
-  //   });
-  // }
-});
+watch(
+  () => store.isAuth,
+  () => {
+    user.value = store.auth;
+  },
+  { immediate: true },
+);
 </script>
 
 <style scoped></style>

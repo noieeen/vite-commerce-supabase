@@ -207,9 +207,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { StarIcon } from '@heroicons/vue/20/solid';
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
+import { useRoute } from 'vue-router';
+
+const productId = ref<number | null>(null);
 
 const product = {
   name: 'Basic Tee 6-Pack',
@@ -262,4 +265,9 @@ const reviews = { href: '#', average: 4, totalCount: 117 };
 
 const selectedColor = ref(product.colors[0]);
 const selectedSize = ref(product.sizes[2]);
+
+onMounted(() => {
+  productId.value = Number(useRoute().params.productId);
+  console.log(productId.value);
+});
 </script>

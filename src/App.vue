@@ -26,16 +26,15 @@ const session = ref<any>();
 const { client } = useSupabase();
 
 onMounted(async () => {
-  // if (store.user == undefined || store.user == null) {
   await client.auth.getSession().then(({ data }) => {
     store.STORE_USER(data.session);
+    if (data.session) store.auth = true;
   });
 
   await client.auth.onAuthStateChange((_, _session) => {
     store.STORE_USER(_session);
+    if (_session) store.auth = true;
   });
-  // }
-  console.log('app', store.user);
 });
 </script>
 

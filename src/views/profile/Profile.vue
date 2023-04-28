@@ -95,6 +95,7 @@ async function updateProfile() {
 
 async function onClickSignOut() {
   await store.SIGN_OUT();
+  router.push('/');
 }
 
 onBeforeMount(() => {});
