@@ -1,5 +1,5 @@
 <template>
-  <TransitionRoot as="div" :show="toasts.length > 0"
+  <TransitionRoot as="div" :show="toasts.length > 0" appear
     ><div class="toast toast-top toast-end z-10" v-if="toasts.length">
       <TransitionChild
         v-for="toast in toasts"

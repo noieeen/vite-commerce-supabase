@@ -12,7 +12,13 @@
       <!-- card -->
       <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <div class="card-body">
-          <SignUp v-if="isSignUp" :loading="false" @sing-up="handleSignUp" /><SignIn v-else :loading="false" @sing-in="handleSignIn" />
+          <SignUp v-if="isSignUp" :loading="false" @sing-up="handleSignUp" /><SignIn
+            v-else
+            :loading="false"
+            @sing-in="handleSignIn"
+            @sing-in-w-pass="handleSignInWPass"
+            @sing-in-w-social="handleSignInWSocial"
+          />
           <div class="small text-center">
             <div v-if="isSignUp">if you have account <span class="underline cursor-pointer" @click="panelSwitch">Sign In</span></div>
             <div v-else>if you don't have account <span class="underline cursor-pointer" @click="panelSwitch">Sign Up</span></div>
@@ -37,7 +43,7 @@ const store = useAuthStore();
 const isSignUp = ref<boolean>(false);
 // const loading = ref<boolean>(false);
 
-const { loading, signInWithOtp } = useSupabase();
+const { loading, signInWithOtp, client } = useSupabase();
 const { openSuccessToast, openErrorToast } = useValidationToast();
 async function handleSignIn(email: string) {
   const success = signInWithOtp(email);
@@ -49,6 +55,21 @@ async function handleSignUp(email: string) {
   store.SIGN_IN_W_OTP(email);
 
   goHome();
+}
+
+async function handleSignInWPass(email: string, password: string) {
+  const { data, error } = await client.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+  if (error) openErrorToast('Something Wrong', 'error');
+  openSuccessToast('Login Success');
+  store.STORE_USER(data);
+  goHome();
+}
+
+function handleSignInWSocial() {
+  openSuccessToast('Success', 'social');
 }
 
 function panelSwitch() {

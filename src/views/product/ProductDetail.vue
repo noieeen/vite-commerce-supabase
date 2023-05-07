@@ -266,6 +266,10 @@ const reviews = { href: '#', average: 4, totalCount: 117 };
 const selectedColor = ref(product.colors[0]);
 const selectedSize = ref(product.sizes[2]);
 
+function fetchProductDetail(){
+
+}
+
 onMounted(() => {
   productId.value = Number(useRoute().params.productId);
   console.log(productId.value);

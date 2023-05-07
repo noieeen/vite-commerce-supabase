@@ -77,22 +77,22 @@
 import router from '@/router';
 import useSupabase from '@/libs/supabase';
 import { ref, watch } from 'vue';
+import useValidationToast from '../toast/useValidateToast';
 
 import { useAuthStore } from '@/store/authStore';
 const store = useAuthStore();
-
+const { openSuccessToast } = useValidationToast();
 const user = ref();
-
-const { signOut } = useSupabase();
 
 function onClickRoute(name: string) {
   router.push(name);
 }
 
 async function onClickSignOut() {
-  await signOut();
-  router.push('/');
-  // location.reload();
+  await store.SIGN_OUT();
+
+  location.reload();
+  openSuccessToast('Success', 'Sign Out Success');
 }
 
 watch(
