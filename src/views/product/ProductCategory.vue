@@ -48,22 +48,23 @@ interface Product {
 const products = ref<Product[]>([]);
 
 async function getProducts() {
-  const tempProducts = await fetchProducts('', 1, 1000);
-  tempProducts.productList.map((item: any) => {
-    products.value.push({
-      id: item.id,
-      name: item.name,
-      href: item.id,
-      imageSrc: item.image_url,
-      imageAlt: item.description,
-      price: item.price,
-      color: '',
+  const { productList: data } = await fetchProducts('', 1, 1000);
+  if (data) {
+    data.map((item: any) => {
+      products.value.push({
+        id: item.id,
+        name: item.name,
+        href: item.id,
+        imageSrc: item.image_url,
+        imageAlt: item.description,
+        price: item.price,
+        color: '',
+      });
     });
-  });
+  }
 }
 
 onMounted(async () => {
   await getProducts();
 });
-
 </script>

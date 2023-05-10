@@ -1,306 +1,390 @@
-<!--
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <template>
-  <div class="container bg-white">
-    <form>
-      <div class="space-y-12">
-        <div class="border-b border-gray-900/10 pb-12">
-          <h2 class="text-base font-semibold leading-7 text-gray-900">Profile</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
+  <div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+      <div
+        class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+        style="
+          clip-path: polygon(
+            74.1% 44.1%,
+            100% 61.6%,
+            97.5% 26.9%,
+            85.5% 0.1%,
+            80.7% 2%,
+            72.5% 32.5%,
+            60.2% 62.4%,
+            52.4% 68.1%,
+            47.5% 58.3%,
+            45.2% 34.5%,
+            27.5% 76.7%,
+            0.1% 64.9%,
+            17.9% 100%,
+            27.6% 76.8%,
+            76.1% 97.7%,
+            74.1% 44.1%
+          );
+        "
+      />
+    </div>
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ isEdit ? product.name : 'Create Product' }}</h2>
+      <p class="mt-2 text-lg leading-8 text-gray-600">Add Product Detail</p>
+    </div>
+    <div class="mx-auto mt-16 max-w-xl sm:mt-20">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div>
+          <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Product ID</label>
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autocomplete="given-name"
+              class="input input-bordered input-primary"
+              :value="product.id"
+              :disabled="true"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Product SKU</label>
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="last-name"
+              id="last-name"
+              autocomplete="family-name"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.SKU"
+            />
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="company" class="block text-sm font-semibold leading-6 text-gray-900">Product Name</label>
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="company"
+              id="company"
+              autocomplete="organization"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.name"
+            />
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="message" class="block text-sm font-semibold leading-6 text-gray-900">Product Description</label>
+          <div class="mt-2.5">
+            <textarea
+              name="message"
+              id="message"
+              rows="4"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.description"
+            />
+          </div>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Category</label>
+          <div class="mt-2.5">
+            <input
+              type="number"
+              name="email"
+              id="email"
+              autocomplete="email"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.categoryId"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">Price</label>
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="first-name"
+              id="first-name"
+              autocomplete="given-name"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.price"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">Stock</label>
+          <div class="mt-2.5">
+            <input
+              type="text"
+              name="last-name"
+              id="last-name"
+              autocomplete="family-name"
+              class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              :value="product.stock"
+            />
+          </div>
+        </div>
 
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-4">
-              <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
-              <div class="mt-2">
-                <div
-                  class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
+        <div class="sm:col-span-2">
+          <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Product Image</label>
+          <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+            <div class="text-center">
+              <PhotoIcon class="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+              <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                <label
+                  for="file-upload"
+                  class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                 >
-                  <span class="flex select-none items-center pl-3 text-gray-500 sm:text-sm">workcation.com/</span>
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    autocomplete="username"
-                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="janesmith"
-                  />
-                </div>
+                  <span>Upload a file</span>
+                  <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                </label>
+                <p class="pl-1">or drag and drop</p>
               </div>
-            </div>
-
-            <div class="col-span-full">
-              <label for="about" class="block text-sm font-medium leading-6 text-gray-900">About</label>
-              <div class="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows="3"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-              <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about yourself.</p>
-            </div>
-
-            <div class="col-span-full">
-              <label for="photo" class="block text-sm font-medium leading-6 text-gray-900">Photo</label>
-              <div class="mt-2 flex items-center gap-x-3">
-                <UserCircleIcon class="h-12 w-12 text-gray-300" aria-hidden="true" />
-                <button
-                  type="button"
-                  class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
-                </button>
-              </div>
-            </div>
-
-            <div class="col-span-full">
-              <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Cover photo</label>
-              <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                <div class="text-center">
-                  <PhotoIcon class="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
-                  <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label
-                      for="file-upload"
-                      class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                    >
-                      <span>Upload a file</span>
-                      <input id="file-upload" name="file-upload" type="file" class="sr-only" />
-                    </label>
-                    <p class="pl-1">or drag and drop</p>
-                  </div>
-                  <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                </div>
-              </div>
+              <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
         </div>
 
-        <div class="border-b border-gray-900/10 pb-12">
-          <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
-
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-3">
-              <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">First name</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="first-name"
-                  id="first-name"
-                  autocomplete="given-name"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-3">
-              <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Last name</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="last-name"
-                  id="last-name"
-                  autocomplete="family-name"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-4">
-              <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-              <div class="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-3">
-              <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Country</label>
-              <div class="mt-2">
-                <select
-                  id="country"
-                  name="country"
-                  autocomplete="country-name"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+        <div class="sm:col-span-2">
+          <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Add More Images</label>
+          <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+            <div class="text-center">
+              <PhotoIcon class="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+              <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                <label
+                  for="file-upload"
+                  class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                 >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
+                  <span>Upload a file</span>
+                  <input id="file-upload" name="file-upload" type="file" class="sr-only" />
+                </label>
+                <p class="pl-1">or drag and drop</p>
               </div>
-            </div>
-
-            <div class="col-span-full">
-              <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900">Street address</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="street-address"
-                  id="street-address"
-                  autocomplete="street-address"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-2 sm:col-start-1">
-              <label for="city" class="block text-sm font-medium leading-6 text-gray-900">City</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  autocomplete="address-level2"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-2">
-              <label for="region" class="block text-sm font-medium leading-6 text-gray-900">State / Province</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="region"
-                  id="region"
-                  autocomplete="address-level1"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div class="sm:col-span-2">
-              <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">ZIP / Postal code</label>
-              <div class="mt-2">
-                <input
-                  type="text"
-                  name="postal-code"
-                  id="postal-code"
-                  autocomplete="postal-code"
-                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
+              <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB, Max 4 files</p>
             </div>
           </div>
         </div>
 
-        <div class="border-b border-gray-900/10 pb-12">
-          <h2 class="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-600">
-            We'll always let you know about important changes, but you pick what else you want to hear about.
-          </p>
-
-          <div class="mt-10 space-y-10">
-            <fieldset>
-              <legend class="text-sm font-semibold leading-6 text-gray-900">By Email</legend>
-              <div class="mt-6 space-y-6">
-                <div class="relative flex gap-x-3">
-                  <div class="flex h-6 items-center">
-                    <input
-                      id="comments"
-                      name="comments"
-                      type="checkbox"
-                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div class="text-sm leading-6">
-                    <label for="comments" class="font-medium text-gray-900">Comments</label>
-                    <p class="text-gray-500">Get notified when someones posts a comment on a posting.</p>
-                  </div>
-                </div>
-                <div class="relative flex gap-x-3">
-                  <div class="flex h-6 items-center">
-                    <input
-                      id="candidates"
-                      name="candidates"
-                      type="checkbox"
-                      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
-                  </div>
-                  <div class="text-sm leading-6">
-                    <label for="candidates" class="font-medium text-gray-900">Candidates</label>
-                    <p class="text-gray-500">Get notified when a candidate applies for a job.</p>
-                  </div>
-                </div>
-                <div class="relative flex gap-x-3">
-                  <div class="flex h-6 items-center">
-                    <input id="offers" name="offers" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                  </div>
-                  <div class="text-sm leading-6">
-                    <label for="offers" class="font-medium text-gray-900">Offers</label>
-                    <p class="text-gray-500">Get notified when a candidate accepts or rejects an offer.</p>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend class="text-sm font-semibold leading-6 text-gray-900">Push Notifications</legend>
-              <p class="mt-1 text-sm leading-6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
-              <div class="mt-6 space-y-6">
-                <div class="flex items-center gap-x-3">
-                  <input
-                    id="push-everything"
-                    name="push-notifications"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label for="push-everything" class="block text-sm font-medium leading-6 text-gray-900">Everything</label>
-                </div>
-                <div class="flex items-center gap-x-3">
-                  <input
-                    id="push-email"
-                    name="push-notifications"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label for="push-email" class="block text-sm font-medium leading-6 text-gray-900">Same as email</label>
-                </div>
-                <div class="flex items-center gap-x-3">
-                  <input
-                    id="push-nothing"
-                    name="push-notifications"
-                    type="radio"
-                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <label for="push-nothing" class="block text-sm font-medium leading-6 text-gray-900">No push notifications</label>
-                </div>
-              </div>
-            </fieldset>
+        <!-- <div class="sm:col-span-2">
+          <label for="phone-number" class="block text-sm font-semibold leading-6 text-gray-900">Phone number</label>
+          <div class="relative mt-2.5">
+            <div class="absolute inset-y-0 left-0 flex items-center">
+              <label for="country" class="sr-only">Country</label>
+              <select
+                id="country"
+                name="country"
+                class="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+              >
+                <option>US</option>
+                <option>CA</option>
+                <option>EU</option>
+              </select>
+              <ChevronDownIcon class="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400" aria-hidden="true" />
+            </div>
+            <input
+              type="tel"
+              name="phone-number"
+              id="phone-number"
+              autocomplete="tel"
+              class="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            />
           </div>
-        </div>
+        </div> -->
+
+        <SwitchGroup as="div" class="flex gap-x-4 sm:col-span-2">
+          <div class="flex h-6 items-center">
+            <Switch
+              v-model="product.isActive"
+              :class="[
+                product.isActive ? 'bg-indigo-600' : 'bg-gray-200',
+                'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+              ]"
+            >
+              <span class="sr-only">Agree to policies</span>
+              <span
+                aria-hidden="true"
+                :class="[
+                  product.isActive ? 'translate-x-3.5' : 'translate-x-0',
+                  'h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out',
+                ]"
+              />
+            </Switch>
+          </div>
+          <SwitchLabel class="text-sm leading-6 text-gray-600">
+            Set to draft
+            {{ ' ' }}
+          </SwitchLabel>
+        </SwitchGroup>
       </div>
-
-      <div class="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-        <button
-          type="submit"
-          class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+      <div class="mt-10">
+        <div v-if="isEdit">
+          <button type="submit" class="btn btn-success w-full" @click="onClickSave">Save Changes</button>
+          <button class="btn btn-error w-full mt-3" @click="onClickDelete">Delete {{ product.name }}</button>
+        </div>
+        <button v-else type="submit" class="btn btn-primary w-full" @click="onClickSave">Create</button>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PhotoIcon, UserCircleIcon } from '@heroicons/vue/24/solid';
+import { ref, onBeforeMount, onMounted } from 'vue';
+import { ChevronDownIcon } from '@heroicons/vue/20/solid';
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
+
+import { useRoute } from 'vue-router';
+import productModel from '@/models/product/product';
+import router from '@/router';
+import useValidationModal from '@/components/modal/useValidateModal';
+import useValidationToast from '@/components/toast/useValidateToast';
+
+interface ProductImage {
+  src: string;
+  alt: string;
+}
+
+interface ProductBreadcrumb {
+  id: number;
+  name: string;
+  href: string;
+}
+
+interface ProductColor {
+  name: string;
+  class: string;
+  selectedClass: string;
+}
+
+interface ProductSize {
+  name: string;
+  inStock: boolean;
+}
+interface Product {
+  id: number;
+  name: string;
+  SKU: string;
+  price: string | number;
+  stock: number;
+  href: string;
+  breadcrumbs: ProductBreadcrumb[];
+  images: ProductImage[];
+  colors: ProductColor[];
+  sizes: ProductSize[];
+  description: string;
+  highlights: string[];
+  details: string;
+  isActive: boolean;
+  categoryId: number;
+}
+
+const { fetchProduct } = productModel();
+const { openWarningModal } = useValidationModal();
+const { openSuccessToast } = useValidationToast();
+
+const productId = ref<number>(0);
+const productConstant = {
+  id: 0,
+  name: '',
+  SKU: '',
+  price: '',
+  stock: 0,
+  href: '',
+  breadcrumbs: [],
+  images: [],
+  colors: [],
+  sizes: [],
+  description: '',
+  highlights: [],
+  details: '',
+  isActive: false,
+  categoryId: 0,
+};
+
+const product = ref<Product>(productConstant);
+const reviews = { href: '#', average: 4, totalCount: 117 };
+
+const isLoading = ref<boolean>(false);
+const isEdit = ref<boolean>(false);
+
+const selectedColor = ref();
+const selectedSize = ref();
+const agreed = ref(false);
+
+async function fetchProductDetail() {
+  isLoading.value = true;
+  try {
+    const { product: item } = await fetchProduct(productId.value);
+    if (item) {
+      product.value = {
+        id: item.id,
+        name: item.name,
+        SKU: item.SKU,
+        price: item.price,
+        stock: item.stock,
+        href: item.id,
+        breadcrumbs: [
+          { id: 0, name: 'Products', href: 0 },
+          { id: item.category_id, name: item.category_desc ? item.category_desc : 'category_desc', href: item.id },
+        ],
+        images: [],
+        colors: [],
+        sizes: [],
+        description: item.description,
+        highlights: [],
+        details: item.description,
+        isActive: item.is_active,
+        categoryId: item.category_id,
+      };
+    }
+  } catch (error) {}
+}
+
+function updatedProduct() {
+  openSuccessToast(
+    `${product.value.name} ${isEdit ? 'updated' : 'created'}.`,
+    '',
+    '',
+    true,
+    true,
+    () => {},
+    () => {},
+    true,
+    2000,
+  );
+}
+
+function deleteProduct() {
+  openSuccessToast(
+    `${product.value.name} deleted.`,
+    '',
+    '',
+    true,
+    true,
+    () => {},
+    () => {},
+    true,
+    1500,
+  );
+}
+
+function onClickSave() {
+  updatedProduct();
+}
+
+function onClickDelete() {
+  openWarningModal('Are you sure ?', `Delete ${product.value.name}`, 'Delete', false, false, () => {
+    deleteProduct();
+  });
+}
+
+onBeforeMount(() => {
+  productId.value = Number(useRoute().params.productId);
+  if (productId.value == 0) {
+    isEdit.value = false;
+  } else {
+    isEdit.value = true;
+  }
+});
+
+onMounted(async () => {
+  if (isEdit.value) await fetchProductDetail();
+});
 </script>

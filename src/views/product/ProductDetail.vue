@@ -191,6 +191,7 @@ import { StarIcon } from '@heroicons/vue/20/solid';
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
 import { useRoute } from 'vue-router';
 import productModel from '@/models/product/product';
+import router from '@/router';
 
 interface Product {
   name: string;
@@ -249,41 +250,40 @@ const isLoading = ref<boolean>(false);
 
 const selectedColor = ref();
 const selectedSize = ref();
-// const productDetail = ref<any>();
 
 async function fetchProductDetail() {
-  if (productId.value != 0) {
-    isLoading.value = true;
-    try {
-      const { product: item } = await fetchProduct(productId.value);
-      if (item) {
-        console.log(item);
-        product.value = {
-          name: item.name,
-          price: item.price,
-          href: item.id,
-          breadcrumbs: [],
-          images: [],
-          colors: [],
-          sizes: [],
-          description: item.description,
-          highlights: [],
-          details: item.description,
-        };
-      }
-    } catch (error) {}
-  }
+  isLoading.value = true;
+  try {
+    const { product: item } = await fetchProduct(productId.value);
+    if (item) {
+      product.value = {
+        name: item.name,
+        price: item.price,
+        href: item.id,
+        breadcrumbs: [
+          { id: 0, name: 'Products', href: 0 },
+          { id: item.category_id, name: item.category_desc ? item.category_desc : 'category_desc', href: item.id },
+        ],
+        images: [],
+        colors: [],
+        sizes: [],
+        description: item.description,
+        highlights: [],
+        details: item.description,
+      };
+    }
+  } catch (error) {}
 }
 
 onBeforeMount(() => {
   productId.value = Number(useRoute().params.productId);
+  if (productId.value == 0) {
+    router.push({ name: 'products' });
+  }
 });
 
 onMounted(async () => {
-  console.log(product.value);
-
   await fetchProductDetail();
-  console.log(product.value);
 });
 </script>
 

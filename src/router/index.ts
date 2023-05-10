@@ -118,7 +118,7 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/admin/product-detail',
+    path: '/admin/product-detail/:productId',
     name: 'admin-product-detail',
     component: AdminProductDetail,
     meta: {
