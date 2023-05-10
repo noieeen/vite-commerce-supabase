@@ -1,27 +1,6 @@
-<!--
-  This example requires some changes to your config:
-
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
--->
 <template>
   <div class="bg-white">
-    <div class="pt-6">
+    <div class="pt-6" v-if="isLoading">
       <nav aria-label="Breadcrumb">
         <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <li v-for="breadcrumb in product.breadcrumbs" :key="breadcrumb.id">
@@ -41,18 +20,18 @@
       <!-- Image gallery -->
       <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
         <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-          <img :src="product.images[0].src" :alt="product.images[0].alt" class="h-full w-full object-cover object-center" />
+          <img class="h-full w-full object-cover object-center" />
         </div>
         <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
           <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-            <img :src="product.images[1].src" :alt="product.images[1].alt" class="h-full w-full object-cover object-center" />
+            <img class="h-full w-full object-cover object-center" />
           </div>
           <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-            <img :src="product.images[2].src" :alt="product.images[2].alt" class="h-full w-full object-cover object-center" />
+            <img class="h-full w-full object-cover object-center" />
           </div>
         </div>
         <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-          <img :src="product.images[3].src" :alt="product.images[3].alt" class="h-full w-full object-cover object-center" />
+          <img class="h-full w-full object-cover object-center" />
         </div>
       </div>
 
@@ -207,71 +186,119 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import { StarIcon } from '@heroicons/vue/20/solid';
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue';
 import { useRoute } from 'vue-router';
+import productModel from '@/models/product/product';
 
-const productId = ref<number | null>(null);
-
-const product = {
-  name: 'Basic Tee 6-Pack',
-  price: '$192',
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Men', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-      alt: 'Two each of gray, white, and black shirts laying flat.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-      alt: 'Model wearing plain black basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-      alt: 'Model wearing plain gray basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-      alt: 'Model wearing plain white basic tee.',
-    },
-  ],
-  colors: [
-    { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-    { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-    { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-  ],
-  sizes: [
-    { name: 'XXS', inStock: false },
-    { name: 'XS', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: true },
-    { name: '2XL', inStock: true },
-    { name: '3XL', inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: ['Hand cut and sewn locally', 'Dyed with our proprietary colors', 'Pre-washed & pre-shrunk', 'Ultra-soft 100% cotton'],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
-const reviews = { href: '#', average: 4, totalCount: 117 };
-
-const selectedColor = ref(product.colors[0]);
-const selectedSize = ref(product.sizes[2]);
-
-function fetchProductDetail(){
-
+interface Product {
+  name: string;
+  price: string | number;
+  href: string;
+  breadcrumbs: ProductBreadcrumb[];
+  images: ProductImage[];
+  colors: ProductColor[];
+  sizes: ProductSize[];
+  description: string;
+  highlights: string[];
+  details: string;
 }
 
-onMounted(() => {
+interface ProductImage {
+  src: string;
+  alt: string;
+}
+
+interface ProductBreadcrumb {
+  id: number;
+  name: string;
+  href: string;
+}
+
+interface ProductColor {
+  name: string;
+  class: string;
+  selectedClass: string;
+}
+
+interface ProductSize {
+  name: string;
+  inStock: boolean;
+}
+
+const { fetchProduct } = productModel();
+
+const productId = ref<number>(0);
+const productConstant = {
+  name: '',
+  price: '',
+  href: '',
+  breadcrumbs: [],
+  images: [],
+  colors: [],
+  sizes: [],
+  description: '',
+  highlights: [],
+  details: '',
+};
+
+const product = ref<Product>(productConstant);
+const reviews = { href: '#', average: 4, totalCount: 117 };
+const isLoading = ref<boolean>(false);
+
+const selectedColor = ref();
+const selectedSize = ref();
+// const productDetail = ref<any>();
+
+async function fetchProductDetail() {
+  if (productId.value != 0) {
+    isLoading.value = true;
+    try {
+      const { product: item } = await fetchProduct(productId.value);
+      if (item) {
+        console.log(item);
+        product.value = {
+          name: item.name,
+          price: item.price,
+          href: item.id,
+          breadcrumbs: [],
+          images: [],
+          colors: [],
+          sizes: [],
+          description: item.description,
+          highlights: [],
+          details: item.description,
+        };
+      }
+    } catch (error) {}
+  }
+}
+
+onBeforeMount(() => {
   productId.value = Number(useRoute().params.productId);
-  console.log(productId.value);
+});
+
+onMounted(async () => {
+  console.log(product.value);
+
+  await fetchProductDetail();
+  console.log(product.value);
 });
 </script>
+
+// { // name: 'Basic Tee 6-Pack', // price: '$192', // href: '#', // breadcrumbs: [ // { id: 1, name: 'Men', href: '#' }, // { id: 2, name:
+'Clothing', href: '#' }, // ], // images: [ // { // src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg', //
+alt: 'Two each of gray, white, and black shirts laying flat.', // }, // { // src:
+'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg', // alt: 'Model wearing plain black basic tee.', // }, // {
+// src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg', // alt: 'Model wearing plain gray basic tee.', //
+}, // { // src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg', // alt: 'Model wearing plain white basic
+tee.', // }, // ], // colors: [ // { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' }, // { name: 'Gray', class: 'bg-gray-200',
+selectedClass: 'ring-gray-400' }, // { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' }, // ], // sizes: [ // { name: 'XXS',
+inStock: false }, // { name: 'XS', inStock: true }, // { name: 'S', inStock: true }, // { name: 'M', inStock: true }, // { name: 'L', inStock: true },
+// { name: 'XL', inStock: true }, // { name: '2XL', inStock: true }, // { name: '3XL', inStock: true }, // ], // description: // 'The Basic Tee 6-Pack
+allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a
+trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.', // highlights:
+['Hand cut and sewn locally', 'Dyed with our proprietary colors', 'Pre-washed & pre-shrunk', 'Ultra-soft 100% cotton'], // details: // 'The 6-Pack
+includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors,
+like our upcoming "Charcoal Gray" limited release.', // }
