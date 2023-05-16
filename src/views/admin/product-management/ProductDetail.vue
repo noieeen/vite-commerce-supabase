@@ -1,6 +1,6 @@
 <template>
   <div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-    <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+    <!-- <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
       <div
         class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
         style="
@@ -24,7 +24,7 @@
           );
         "
       />
-    </div>
+    </div> -->
     <div class="mx-auto max-w-2xl text-center">
       <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ isEdit ? product.name : 'Create Product' }}</h2>
       <p class="mt-2 text-lg leading-8 text-gray-600">Add Product Detail</p>
@@ -83,6 +83,17 @@
             />
           </div>
         </div>
+        {{ product.categoryId + ':' + product.categoryDesc }}
+        <base-combobox
+          :selected="{ id: product.categoryId, value: product.categoryDesc }"
+          :data="productCategories"
+          :class="'block text-sm font-semibold leading-6 text-gray-900'"
+          @update="(value)=>{
+            product.categoryId = value.id;
+            product.categoryDesc = value.value
+          }"
+        />
+
         <div class="sm:col-span-2">
           <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">Category</label>
           <div class="mt-2.5">
@@ -235,6 +246,7 @@ import productModel from '@/models/product/product';
 import router from '@/router';
 import useValidationModal from '@/components/modal/useValidateModal';
 import useValidationToast from '@/components/toast/useValidateToast';
+import BaseCombobox from '@/components/combobox/BaseCombobox.vue';
 
 interface ProductImage {
   src: string;
@@ -273,6 +285,7 @@ interface Product {
   details: string;
   isActive: boolean;
   categoryId: number;
+  categoryDesc: string;
 }
 
 const { fetchProduct } = productModel();
@@ -296,6 +309,7 @@ const productConstant = {
   details: '',
   isActive: false,
   categoryId: 0,
+  categoryDesc: '',
 };
 
 const product = ref<Product>(productConstant);
@@ -303,10 +317,11 @@ const reviews = { href: '#', average: 4, totalCount: 117 };
 
 const isLoading = ref<boolean>(false);
 const isEdit = ref<boolean>(false);
-
-const selectedColor = ref();
-const selectedSize = ref();
-const agreed = ref(false);
+const productCategories = ref<{ id: number; value: string }[]>([
+  { id: 1, value: 'Man' },
+  { id: 2, value: 'Women' },
+  { id: 3, value: 'Kid' },
+]);
 
 async function fetchProductDetail() {
   isLoading.value = true;
@@ -332,6 +347,7 @@ async function fetchProductDetail() {
         details: item.description,
         isActive: item.is_active,
         categoryId: item.category_id,
+        categoryDesc: item.category_desc,
       };
     }
   } catch (error) {}

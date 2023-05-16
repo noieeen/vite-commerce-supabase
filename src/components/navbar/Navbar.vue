@@ -1,6 +1,6 @@
 <template>
-  <nav>
-    <div class="navbar bg-white shadow-lg">
+  <nav class="z-[1000] sticky top-0 shadow-lg">
+    <div class="navbar bg-white">
       <div class="flex-1">
         <a class="btn btn-ghost normal-case text-xl" @click="onClickRoute('/')">ViteCommerce</a>
       </div>
