@@ -75,11 +75,20 @@ export default function productModel() {
     return { loading, product };
   };
 
-  const createProduct = async () => {};
+  const createProduct = async (product: Product.Detail) => {
+    const { data, error } = await supabase.from('products').insert([product]);
+    return { data, error };
+  };
 
-  const updateProduct = async () => {};
+  const updateProduct = async (product: Product.Detail) => {
+    const { data, error } = await supabase.from('products').update(product).eq('id', product.id);
+    return { data, error };
+  };
 
-  const deleteProduct = async (id: number) => {};
+  const deleteProduct = async (product_id: number) => {
+    const { data, error } = await supabase.from('products').update({ is_delete: true }).eq('id', product_id);
+    return { data, error };
+  };
 
   return {
     fetchProducts,
