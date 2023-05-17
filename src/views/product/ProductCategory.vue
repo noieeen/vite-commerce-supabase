@@ -33,38 +33,30 @@ import BaseTable from '@/components/table/Table.vue';
 import Pagination from '@/components/pagination/Pagination.vue';
 import { onMounted, ref } from 'vue';
 import productModel from '@/models/product/product';
+import useSupabase from '@/libs/supabase';
 const { fetchProducts } = productModel();
 
-interface Product {
-  id: number;
-  name: string;
-  href: string;
-  imageSrc: string;
-  imageAlt: string;
-  price: string | number;
-  color: string;
-}
-
-const products = ref<Product[]>([]);
+const products = ref<Product.Item[]>([]);
 
 async function getProducts() {
   const { productList: data } = await fetchProducts('', 1, 1000);
   if (data) {
-    data.map((item: any) => {
-      products.value.push({
-        id: item.id,
-        name: item.name,
-        href: item.id,
-        imageSrc: item.image_url,
-        imageAlt: item.description,
-        price: item.price,
-        color: '',
-      });
-    });
+    products.value = data;
   }
 }
 
+const { client: supabase } = useSupabase();
+
 onMounted(async () => {
   await getProducts();
+  supabase
+    .channel('custom-all-channel')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, async (payload) => {
+      console.log('Change received!', payload);
+      if (payload) {
+        await getProducts();
+      }
+    })
+    .subscribe();
 });
 </script>

@@ -1,6 +1,6 @@
-<template>
+<template >
   <TransitionRoot as="div" :show="toasts.length > 0" appear
-    ><div class="toast toast-top toast-end z-10" v-if="toasts.length">
+    ><div class="z-[1001] toast toast-top toast-end z-10" v-if="toasts.length">
       <TransitionChild
         v-for="toast in toasts"
         as="template"

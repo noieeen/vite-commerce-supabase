@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="validationModalConfig.isOpen">
-    <Dialog as="div" class="relative z-10" @close="closeValidationModal(validationModalConfig.onClose)">
+    <Dialog as="div" class="relative z-[1001]" @close="closeValidationModal(validationModalConfig.onClose)">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"

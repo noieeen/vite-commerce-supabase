@@ -36,6 +36,16 @@ export default function categoryModel() {
     return { loading, productList, totalRecords };
   };
 
+  const fetchAllCategories = async () => {
+    // let supabaseQuery = await supabase.from('category').select('*');//.eq('is_active', true).eq('is_deleted', true);
+
+    const { data, error, status } = await supabase.from('category').select('*');//.eq('is_active', true).eq('is_deleted', true);;
+
+    if (error && status !== 406) throw error;
+
+    return { data, error };
+  };
+
   const fetchCategory = async (id: number) => {
     let loading = false;
     let category = null;
@@ -76,6 +86,7 @@ export default function categoryModel() {
 
   return {
     fetchCategories,
+    fetchAllCategories,
     fetchCategory,
     createCategory,
     updateCategory,
