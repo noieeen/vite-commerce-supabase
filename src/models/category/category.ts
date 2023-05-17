@@ -2,7 +2,6 @@ import useSupabase from '@/libs/supabase';
 
 const { client: supabase } = useSupabase();
 export default function categoryModel() {
-=
   const fetchCategories = async (query: string, page: number, limit: number) => {
     let loading = false;
     let productList = null;

@@ -35,12 +35,11 @@ function loadData() {
   console.log(props.data);
   if (props.data.length > 0) {
     // set header
-    const header_temp = props.data.map((key,value)=>Object.keys(key));
-    tableHeader.value = header_temp[0]
-
+    const header_temp = props.data.map((key, value) => Object.keys(key));
+    tableHeader.value = header_temp[0];
 
     // set data
-    tableData.value = props.data.map((value:any, index) => {
+    tableData.value = props.data.map((value: any, index) => {
       return { key: value.id as number, value: Object.values(value) };
     });
   }
